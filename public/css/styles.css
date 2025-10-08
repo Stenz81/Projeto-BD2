@@ -1,0 +1,117 @@
+* {
+    text-align: center;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #412929;
+    color: white;
+}
+
+p {
+    color: lightgray;
+}
+
+a {
+    color: gold;
+}
+
+ul,
+ol {
+    display: inline-block;
+    text-align: left;
+}
+
+li {
+    text-align: left;
+}
+
+.subtitle {
+    text-decoration: overline double;
+}
+
+.description {
+    text-decoration-line: underline;
+}
+
+.container {
+    width: 700px;
+    background-color: #2f0f0f;
+    margin: 20px auto;
+    padding: 10px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, .5);
+}
+
+combo-box {
+  position: relative;
+  width: 250px;
+}
+
+/* Input que simula o select */
+.combo-box {
+  position: relative;
+  width: 300px;
+}
+
+.input-box {
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.input-box:focus {
+  outline: 2px solid #999;
+}
+
+.input-box .tag {
+  background-color: #e0e0e0;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.input-box .placeholder {
+  color: #888;
+  font-style: italic;
+  font-size: 14px;
+}
+
+ul#optionsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top: none;
+  background-color: brown;
+  display: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+#optionsList li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#optionsList li:hover {
+  background-color: #f0f0f0;
+}
+
+#optionsList li.selected {
+  background-color: #019101;
+}
