@@ -31,16 +31,10 @@ function selectMagia() {
     const crencas = []
     const forma_de_combate_select = document.getElementById("cb_FormaCombate")
     const formas_de_combate = []
-    const saida = document.getElementsById("container2")
+    const saida = document.getElementById("container2")
 
     saida.innerHTML = ""; //limpar saida
     
-    if(formas_de_combate.length > 2){
-        saida.innerHTML = "<p class='erro'>Por favor, insira de 0 a 2 formas de combate.</p>";
-    }
-    if(nivel_superior<nivel_inferior){
-        saida.innerHTML = "<p class='erro'>Nível Inferior não pode ser menor que Nível Superior</p>";
-    }
 
     for (let option of crencas_select.options) {
         if (option.selected) {
@@ -52,6 +46,13 @@ function selectMagia() {
         if (option.selected) {
             formas_de_combate.push(option.text); // ou option.value
         }
+    }
+
+    if(formas_de_combate.length > 2){
+        saida.innerHTML = "<p class='erro'>Por favor, insira de 0 a 2 formas de combate.</p>";
+    }
+    if(nivel_superior<nivel_inferior){
+        saida.innerHTML = "<p class='erro'>Nível Inferior não pode ser menor que Nível Superior</p>";
     }
 
     let selecao = "SELECT DISTINCT Magia.* FROM Magia, crenca, forma_de_combate, crenca_x_magia, forma_de_combate_x_magia";
