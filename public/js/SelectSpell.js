@@ -1,20 +1,21 @@
-/*const { Pool } = require('pg');
+import { Pool } from 'pg'
 require('dotenv').config();
 
 const pool = new Pool({
     connectionString: process.env.NEON_URI,
     ssl: { rejectUnauthorized: false }
-});
+})
 
-const connectToDatabase = async () => {
+
+const connectToDatabase = async (query) => {
     try {
         // Test connection
-        await pool.query('SELECT 1');
-        console.log('Connected to the PostgreSQL database');
+        const res = await pool.query(query);
+        console.log(res)
     } catch (err) {
         console.error(`Error connecting to the database: ${err}`);
     }    
-};*/
+};
 //SELECT DISTINCT Magia.* FROM Magia, crenca, forma_de_combate, crenca_x_magia, forma_de_combate_x_magia 
 //WHERE Magia.id = crenca_x_magia.id_magia
 //AND Magia.id = forma_de_combate_x_magia.id_magia
@@ -27,27 +28,12 @@ function selectMagia() {
 
     const nivel_inferior = document.getElementById("nivel_inferior").value.toString()
     const nivel_superior = document.getElementById("nivel_superior").value.toString()
-    const crencas_select = document.getElementById("cb_Crenca")
-    const crencas = window.selectedValues 
-    const forma_de_combate_select = document.getElementById("cb_FormaCombate")
-    const formas_de_combate = []
+    const crencas = window.selectedValues
+    const formas_de_combate = window.selectedValues1 
     const saida = document.getElementById("container2")
 
     saida.innerHTML = ""; //limpar saida
     
-
-    for (let option of crencas_select.options) {
-        if (option.selected) {
-            crencas.push(option.text); // ou option.value
-        }
-    }
-
-    for (let option of forma_de_combate_select.options) {
-        if (option.selected) {
-            formas_de_combate.push(option.text); // ou option.value
-        }
-    }
-
     if(formas_de_combate.length > 2){
         saida.innerHTML = "<p class='erro'>Por favor, insira de 0 a 2 formas de combate.</p>"
         return;
@@ -85,7 +71,7 @@ function selectMagia() {
         }
         selecao = selecao.concat(")\n");
     }
-    console.log(selecao)
+    connectToDatabase(selecao)
 }
 
 const botao = document.getElementById("Confirm_button")
