@@ -117,8 +117,19 @@ combo-box {
 }
 
 input[type="button"] {
-  background-color: #4CAF50; /* Cor de fundo */
-  color: white; /* Cor do texto */
+  background-color: #888888; /* Cor de fundo */
+  color: #382344; /* Cor do texto */
+  border: none; /* Sem borda */
+  padding: 10px 20px; /* Espaçamento interno */
+  font-size: 16px; /* Tamanho da fonte */
+  cursor: pointer; /* Aparece o cursor de mão */
+  border-radius: 5px; /* Cantos arredondados */
+  transition: background-color 0.3s; /* Efeito de transição */
+}
+
+input[type="button"]:hover {
+  background-color: rgb(74, 74, 74); /* Cor de fundo */
+  color: #bfa1d0; /* Cor do texto */
   border: none; /* Sem borda */
   padding: 10px 20px; /* Espaçamento interno */
   font-size: 16px; /* Tamanho da fonte */
