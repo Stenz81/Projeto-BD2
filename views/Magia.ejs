@@ -13,7 +13,6 @@
   <span class="crencas">
     <%= crencas.join(" ou ") %>
   </span>
-  –
   <span class="formas">
     <%= formas_de_combate.join(" ou ") %>
   </span>
@@ -24,11 +23,10 @@
     <p><%= magia.descricao %></p>
     <p>
     <strong>Custo:</strong>
-        <%= magia.custo_inicial %>, <%= magia.custo_por_rodada %> por rodada, <%= magia.custo_acao>
+        <%= magia.custo_inicial %>, <%= magia.custo_por_rodada %> por rodada, <%= magia.custo_acao%>
     </p>
     <p>Nível: <%= magia.escalonamento %></p>
   </main>
 
-  <script src="/js/MagiaAux.js"></script>
 </body>
 </html>

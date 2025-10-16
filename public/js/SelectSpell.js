@@ -1,21 +1,4 @@
-import { Pool } from 'pg'
-require('dotenv').config();
 
-const pool = new Pool({
-    connectionString: process.env.NEON_URI,
-    ssl: { rejectUnauthorized: false }
-})
-
-
-const connectToDatabase = async (query) => {
-    try {
-        // Test connection
-        const res = await pool.query(query);
-        console.log(res)
-    } catch (err) {
-        console.error(`Error connecting to the database: ${err}`);
-    }    
-};
 //SELECT DISTINCT Magia.* FROM Magia, crenca, forma_de_combate, crenca_x_magia, forma_de_combate_x_magia 
 //WHERE Magia.id = crenca_x_magia.id_magia
 //AND Magia.id = forma_de_combate_x_magia.id_magia
@@ -29,50 +12,50 @@ function selectMagia() {
     const nivel_inferior = document.getElementById("nivel_inferior").value.toString()
     const nivel_superior = document.getElementById("nivel_superior").value.toString()
     const crencas = window.selectedValues
-    const formas_de_combate = window.selectedValues1 
+    const formas_de_combate = window.selectedValues1
     const saida = document.getElementById("container2")
 
     saida.innerHTML = ""; //limpar saida
-    
-    if(formas_de_combate.length > 2){
+
+    if (formas_de_combate.length > 2) {
         saida.innerHTML = "<p class='erro'>Por favor, insira de 0 a 2 formas de combate.</p>"
         return;
     }
-    if(nivel_superior<nivel_inferior){
+    if (nivel_superior < nivel_inferior) {
         saida.innerHTML = "<p class='erro'>Nível Inferior não pode ser menor que Nível Superior</p>";
-        return; 
+        return;
     }
-
-    let selecao = "SELECT DISTINCT Magia.* FROM Magia, crenca, forma_de_combate, crenca_x_magia, forma_de_combate_x_magia";
-    selecao = selecao.concat("\nWHERE Magia.id = crenca_x_magia.id_magia");
-    selecao = selecao.concat("\nAND Magia.id = forma_de_combate_x_magia.id_magia");
-    selecao = selecao.concat("\nAND crenca.id = crenca_x_magia.id_crenca");
-    selecao = selecao.concat("\nAND Magia.nivel_base BETWEEN ")
-    selecao = selecao.concat(nivel_inferior).concat(" AND ").concat(nivel_superior)
-
-    if (crencas.length > 0) {
-        selecao = selecao.concat("\nAND crenca.nome IN (");
-        for (let i = 0; i < crencas.length; i++) {
-            selecao = selecao.concat("'", crencas[i], "'");
-            if (i !== crencas.length - 1) {
-                selecao = selecao.concat(", ");
+    fetch('/buscar-magias', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            nivel_inferior,
+            nivel_superior,
+            crencas,
+            formas_de_combate
+        })
+    })
+        .then(res => res.json())
+        .then(magias => {
+            if (!Array.isArray(magias)) {
+                saida.innerHTML = "<p class='erro'>Erro ao buscar magias.</p>";
+                return;
             }
-        }
-        selecao = selecao.concat(")");
-    }
-
-    if (formas_de_combate.length > 0) {
-        selecao = selecao.concat("\nAND forma_de_combate.nome IN (");
-        for (let i = 0; i < formas_de_combate.length; i++) {
-            selecao = selecao.concat("'", formas_de_combate[i], "'");
-            if (i !== formas_de_combate.length - 1) {
-                selecao = selecao.concat(", ");
-            }
-        }
-        selecao = selecao.concat(")\n");
-    }
-    connectToDatabase(selecao)
+            magias.forEach(m => {
+                
+                const link = document.createElement('a');
+                console.log(m.nome)
+                link.href = '/magias/' + m.nome.toString(); // Rota que você criar para mostrar detalhes
+                link.textContent = m.nome;
+                link.style.display = "block"; // Um embaixo do outro
+                saida.appendChild(link)
+            });
+        })
+        .catch(() => {
+            saida.innerHTML = "<p class='erro'>Erro na requisição.</p>";
+        });
 }
 
 const botao = document.getElementById("Confirm_button")
 botao.addEventListener("click", selectMagia)
+
