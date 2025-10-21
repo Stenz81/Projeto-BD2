@@ -3,24 +3,19 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Busca por Magia - RPG</title>
+    <title>Inserir Magia - RPG</title>
 </head>
 
 <body>
     <main>
         <link rel="stylesheet" type="text/css" href="css/styles.css">   
         <div class="container" id="container1">
-            <label for="nivel">Nível:</label>
-            <input type="number" value=0 id="nivel_inferior" name="Nível inferior">
-            <input type="number" value=0 id="nivel_superior" name="Nível superior">
+            <input type="text" id="nome_magia_unico" name="Nome_Magia_Unico" placeholder= "-- Insira o nome da magia e seus componentes --" style="width:400px;">
         </div>
-        <div>
-            <input type="button" id="Confirm_button" name="Confirm_button" value="Buscar">
-            <script src="/js/SelectSpell.js"></script>
-        </div>
-        <div class="combo-box">
+        <div class="center-container" id="container_box">
+            <div class="combo-box">
             <div class="input-box" id="comboInput" tabindex="0">
-                <span class="placeholder">--Selecione 0 a x Crenças--</span>
+                <span class="placeholder">--Selecione 2 Crenças--</span>
             </div>
             <ul id="optionsList">
                 <li data-value="Religião">Religião</li>
@@ -34,10 +29,10 @@
                 <li data-value="Emoção">Emoção</li>
             </ul>
             
-        </div>
-        <div class="combo-box">        
+            </div>
+            <div class="combo-box">        
             <div class="input-box" id="comboInputFC" tabindex="0">
-                <span class="placeholder">--Selecione 0 a 2 Formas de Combate--</span>
+                <span class="placeholder">--Selecione 2 Formas de Combate--</span>
             </div>
             <ul id="optionsListFC">
                 <li data-value="AoE">AoE</li>
@@ -51,8 +46,18 @@
                 <li data-value="Tank">Tank</li>
             </ul>
             
+            </div>
         </div>
+        <textarea id="descricao" name="descricao" rows="8" cols="85" placeholder=" Digite aqui a descrição de sua magia (incluindo distância!)"></textarea>
+        <div>
+            <input type="button" id="Confirm_button_single" name="Confirm_button_single" value="Inserir Magia">
+            <script src="/js/SelectSpell.js"></script>
+        </div>
+
         <div class="container" id="container2"></div>
+        <a href="Busca.html">
+            <input type="button" id="Change_button" value="Buscar Magias">
+        </a>
     </main>
     <script src="/js/selectInput.js"></script>
     <script>

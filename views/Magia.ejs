@@ -11,7 +11,7 @@
 
     <h3 class="subtitle">
   <span class="crencas">
-    <%= crencas.join(" ou ") %>
+    <%= crencas.join(" ou ") %> -
   </span>
   <span class="formas">
     <%= formas_de_combate.join(" ou ") %>
@@ -20,12 +20,14 @@
 
     <!-- Aqui você pode exibir outros atributos -->
     <p><strong>Nível base:</strong> <%= magia.nivel_base %></p>
-    <p><%= magia.descricao %></p>
-    <p>
+    <div class="container" id="container1"><p style="text-align: justify;"><%= magia.descricao %></p></div>
+    <div class="container" id="container2"><p style="text-align: justify;">
     <strong>Custo:</strong>
         <%= magia.custo_inicial %>, <%= magia.custo_por_rodada %> por rodada, <%= magia.custo_acao%>
     </p>
-    <p>Nível: <%= magia.escalonamento %></p>
+    <p style="text-align: justify;">Nível: <%= magia.escalonamento %></p>
+    </div>
+    
   </main>
 
 </body>

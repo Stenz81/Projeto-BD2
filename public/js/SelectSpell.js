@@ -17,6 +17,8 @@ function selectMagia() {
 
     saida.innerHTML = ""; //limpar saida
 
+    saida.style.display = "block";
+
     if (formas_de_combate.length > 2) {
         saida.innerHTML = "<p class='erro'>Por favor, insira de 0 a 2 formas de combate.</p>"
         return;
@@ -56,6 +58,6 @@ function selectMagia() {
         });
 }
 
-const botao = document.getElementById("Confirm_button")
-botao.addEventListener("click", selectMagia)
+const botao_confirm_busca = document.getElementById("Confirm_button")
+botao_confirm_busca.addEventListener("click", selectMagia)
 

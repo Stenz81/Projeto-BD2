@@ -16,7 +16,7 @@ p {
 }
 
 a {
-    color: rgb(0, 0, 0);
+    color: rgb(253, 237, 255);
 }
 
 ul,
@@ -43,6 +43,18 @@ li {
     margin: 20px auto;
     padding: 10px;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, .5);
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 20px auto;
+}
+
+#container2 {
+    display: "none"
 }
 
 combo-box {
@@ -118,7 +130,7 @@ combo-box {
 
 input[type="button"] {
   background-color: #888888; /* Cor de fundo */
-  color: #382344; /* Cor do texto */
+  color: #400063; /* Cor do texto */
   border: none; /* Sem borda */
   padding: 10px 20px; /* Espaçamento interno */
   font-size: 16px; /* Tamanho da fonte */
@@ -137,3 +149,25 @@ input[type="button"]:hover {
   border-radius: 5px; /* Cantos arredondados */
   transition: background-color 0.3s; /* Efeito de transição */
 }
+
+input[type="text"]{
+  background-color: rgb(37, 37, 37);
+  color: rgb(218, 172, 222);
+  margin: 20px auto;
+  padding: 10px;  
+}
+
+.input[type="text"] .placeholder {
+  color: rgb(208, 208, 208);
+  font-style: italic;
+  font-size: 14px;
+}
+
+textarea{
+  background-color: rgb(37, 37, 37);
+  color: rgb(218, 172, 222);
+  margin: 20px auto;
+  padding: 10px;  
+  text-align: justify;
+}
+
