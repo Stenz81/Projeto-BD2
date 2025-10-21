@@ -22,7 +22,7 @@ server.use(express.static('public'));
 server.use(express.json())
 
 server.get('/', async (request, response) => {
-    response.send(await readFile('./busca.html', 'utf8'));
+    response.send(await readFile('public/busca.html', 'utf8'));
 });
 
 server.post('/buscar-magias', async (req, res) => {
