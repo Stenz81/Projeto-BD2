@@ -64,12 +64,79 @@ server.post('/buscar-magias', async (req, res) => {
     }
 });
 
+server.post('/inserir-magias', async (req, res) => {
+    const { nivel_magia, nome_magia, crenca1, crenca2, forma1, forma2, custo_inicial, custo_rodada, custo_acao, escalonamento, descricao } = req.body;
+    const client = await pool.connect()
+    console.log('Olá')
+    try {
+        await client.query('BEGIN')
+        const queryInsertMagia =
+            `INSERT INTO Magia(nome,custo_inicial,custo_por_rodada,nivel_base,descricao,custo_acao,escalonamento) 
+        VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING ID`
+        const paramsMagia = [nome_magia, custo_inicial, custo_rodada, nivel_magia, descricao, custo_acao, escalonamento] //parametros 
+        console.log(paramsMagia)
+        const res_magia = await client.query(queryInsertMagia, paramsMagia)
+
+        const queryCrencas = `SELECT Crenca.id FROM Crenca WHERE Crenca.nome = $1 OR Crenca.nome = $2`
+        const paramsSelectCrenca = [crenca1, crenca2]
+
+        const res_crencas = await client.query(queryCrencas, paramsSelectCrenca)
+        const paramsCrenca = [res_magia.rows[0].id]
+        paramsCrenca.push(...res_crencas.rows.map(row => row.id))
+
+        const queryInsertCrencas =
+            `
+        INSERT INTO crenca_x_magia(id_magia, id_crenca) VALUES 
+        ($1, $2),
+        ($1, $3)`
+        console.log(paramsCrenca)
+        await client.query(queryInsertCrencas, paramsCrenca)
+
+        const queryFormaCombate = `
+        SELECT forma_de_combate.id 
+            FROM forma_de_combate 
+            WHERE forma_de_combate.nome = $1 OR forma_de_combate.nome = $2`
+
+
+
+
+        const paramsSelectFormaCombate = [forma1, forma2]
+        const res_FormaCombate = await client.query(queryFormaCombate, paramsSelectFormaCombate)
+
+        const paramsFormaCombate = [res_magia.rows[0].id]
+        paramsFormaCombate.push(...res_FormaCombate.rows.map(row => row.id))
+        const queryInsertFormaCombate =
+            `
+        INSERT INTO forma_de_combate_x_magia(id_magia, id_forma_de_combate) VALUES 
+        ($1, $2),
+        ($1, $3)`
+
+        await client.query(queryInsertFormaCombate, paramsFormaCombate)
+
+
+        await client.query('COMMIT')
+        console.log('Comittou')
+    } catch (e) {
+        if (e.code === '23505') { // unique constraint
+            e.message = `Erro: Nome ${nome_magia} já cadastrado`;
+        } else if (e.code === '23502') {
+            e.message = 'Erro: Magia requer nome obrigatório';
+        }
+        await client.query('ROLLBACK')
+        console.log("Erro na inserção")
+        res.status(500).json({ erro: e.message });
+    } finally {
+        client.release()
+    }
+});
+
+
 server.get('/magias/:nome', async (request, response) => {
     console.log(request.path)
     value = decodeURIComponent(request.path)
     console.log(value)
     // já vem decodificado: "NÉVOA SOMBRIA"
-    const name = request.params.nome; 
+    const name = request.params.nome;
     console.log(name)
     upperName = name
     try {
@@ -98,10 +165,11 @@ server.get('/magias/:nome', async (request, response) => {
         const crencas = crencas_result.rows.map(row => row.nome)
         const formas_de_combate = formas_de_combate_result.rows.map(row => row.nome)
         const magia = magia_result.rows[0]
-        response.render('magia.ejs', {magia,crencas,formas_de_combate});
+        response.render('magia.ejs', { magia, crencas, formas_de_combate });
     } catch (err) {
         console.error('Database error:', err);
         response.status(500).send('Internal server error');
+        res.status(500).json({ erro: 'Erro no servidor' });
     }
 });
 

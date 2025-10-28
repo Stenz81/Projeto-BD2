@@ -8,7 +8,6 @@
 //AND (crenca_x_magia.id_crenca = (SELECT id FROM crenca WHERE nome = 'Natureza') OR crenca_x_magia.id_crenca = (SELECT id FROM crenca WHERE nome = 'Anima'))
 //AND (forma_de_combate_x_magia.id_forma_de_combate = (SELECT id FROM forma_de_combate WHERE nome = 'Tank') OR (forma_de_combate_x_magia.id_forma_de_combate = (SELECT id FROM forma_de_combate WHERE nome = 'Suporte')))
 function selectMagia() {
-
     const nivel_inferior = document.getElementById("nivel_inferior").value.toString()
     const nivel_superior = document.getElementById("nivel_superior").value.toString()
     const crencas = window.selectedValues

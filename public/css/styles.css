@@ -148,6 +148,8 @@ input[type="button"]:hover {
   cursor: pointer; /* Aparece o cursor de mão */
   border-radius: 5px; /* Cantos arredondados */
   transition: background-color 0.3s; /* Efeito de transição */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 input[type="text"]{
