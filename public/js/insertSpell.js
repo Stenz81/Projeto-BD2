@@ -25,31 +25,37 @@ function insertMagia() {
     const forma1 = formas_de_combate[0]
     const forma2 = formas_de_combate[1]
 
-        fetch('/inserir-magias', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                nivel_magia,
-                nome_magia,
-                crenca1,
-                crenca2,
-                forma1,
-                forma2,
-                custo_inicial,
-                custo_rodada,
-                custo_acao,
-                escalonamento,
-                descricao
+    const response = fetch('/inserir-magias', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            nivel_magia,
+            nome_magia,
+            crenca1,
+            crenca2,
+            forma1,
+            forma2,
+            custo_inicial,
+            custo_rodada,
+            custo_acao,
+            escalonamento,
+            descricao
 
-            })
         })
-    }
-
-    if (!response.ok) {
-        const errorData = response.json();
-        console(errorData.erro)
-        saida.innerHTML = errorData.erro
-    }
+    })
+        .then(async response => {
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.erro);
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error("Erro na requisição:", error); //TAlvez tirar essa linha
+            saida.innerHTML = error.message;
+        });
+        console.log(response)
+}
 
 const botao_confirm_insert = document.getElementById("Confirm_button_single")
 botao_confirm_insert.addEventListener("click", insertMagia)

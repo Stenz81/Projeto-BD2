@@ -94,10 +94,11 @@ function parseHabilidades(texto) {
             descricao
         })
     })
-    }
-        catch(){
-
-        }
+    }catch () {
+        const errorData = response.json();
+        console(errorData.erro)
+        saida.innerHTML = errorData.erro
+}
     
 
     //inserir checagem de erro pos fetch

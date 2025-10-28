@@ -124,7 +124,7 @@ server.post('/inserir-magias', async (req, res) => {
         }
         await client.query('ROLLBACK')
         console.log("Erro na inserção")
-        res.status(500).json({ erro: e.message });
+         res.status(500).json({ erro: e.message });
     } finally {
         client.release()
     }
