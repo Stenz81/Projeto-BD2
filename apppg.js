@@ -22,11 +22,11 @@ server.use(express.static('public'));
 server.use(express.json())
 
 server.get('/', async (request, response) => {
-    response.send(await readFile('busca.html', 'utf8'));
+    response.send(await readFile('Busca.html', 'utf8'));
 });
 
 server.get('/insere.html', async (request, response) => {
-    response.send(await readFile('insere.html', 'utf8'));
+    response.send(await readFile('Insere.html', 'utf8'));
 });
 
 server.post('/buscar-magias', async (req, res) => {
