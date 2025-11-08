@@ -165,7 +165,7 @@ server.get('/magias/:nome', async (request, response) => {
         const crencas = crencas_result.rows.map(row => row.nome)
         const formas_de_combate = formas_de_combate_result.rows.map(row => row.nome)
         const magia = magia_result.rows[0]
-        response.render('magia.ejs', { magia, crencas, formas_de_combate });
+        response.render('Magia.ejs', { magia, crencas, formas_de_combate });
     } catch (err) {
         console.error('Database error:', err);
         response.status(500).send('Internal server error');
