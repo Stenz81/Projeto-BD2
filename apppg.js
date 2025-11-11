@@ -30,7 +30,7 @@ server.get('/insere.html', async (request, response) => {
 });
 
 server.post('/buscar-magias', async (req, res) => {
-    const { nivel_inferior, nivel_superior, crencas, formas_de_combate } = req.body;
+    const { nome_magia, nivel_inferior, nivel_superior, crencas, formas_de_combate } = req.body;
     let query = `
     SELECT DISTINCT Magia.* FROM Magia
     JOIN crenca_x_magia ON Magia.id = crenca_x_magia.id_magia
@@ -39,7 +39,6 @@ server.post('/buscar-magias', async (req, res) => {
     JOIN forma_de_combate ON forma_de_combate.id = forma_de_combate_x_magia.id_forma_de_combate
     WHERE Magia.nivel_base BETWEEN $1 AND $2
   `;
-    console.log(nivel_inferior)
     const params = [nivel_inferior, nivel_superior];
     let index = 3;
 
@@ -54,9 +53,12 @@ server.post('/buscar-magias', async (req, res) => {
         query += ` AND forma_de_combate.nome IN (${placeholders})`;
         params.push(...formas_de_combate);
     }
+    if(nome_magia){
+        query += ` AND Magia.nome LIKE $${index++}`;
+        params.push('%'+nome_magia+'%')
+    }
     try {
         const result = await pool.query(query, params);
-        console.log(result.rows)
         res.json(result.rows);
     } catch (err) {
         console.error('Erro ao buscar magias:', err);
@@ -67,14 +69,12 @@ server.post('/buscar-magias', async (req, res) => {
 server.post('/inserir-magias', async (req, res) => {
     const { nivel_magia, nome_magia, crenca1, crenca2, forma1, forma2, custo_inicial, custo_rodada, custo_acao, escalonamento, descricao } = req.body;
     const client = await pool.connect()
-    console.log('Olá')
     try {
         await client.query('BEGIN')
         const queryInsertMagia =
             `INSERT INTO Magia(nome,custo_inicial,custo_por_rodada,nivel_base,descricao,custo_acao,escalonamento) 
         VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING ID`
         const paramsMagia = [nome_magia, custo_inicial, custo_rodada, nivel_magia, descricao, custo_acao, escalonamento] //parametros 
-        console.log(paramsMagia)
         const res_magia = await client.query(queryInsertMagia, paramsMagia)
 
         const queryCrencas = `SELECT Crenca.id FROM Crenca WHERE Crenca.nome = $1 OR Crenca.nome = $2`
@@ -89,16 +89,12 @@ server.post('/inserir-magias', async (req, res) => {
         INSERT INTO crenca_x_magia(id_magia, id_crenca) VALUES 
         ($1, $2),
         ($1, $3)`
-        console.log(paramsCrenca)
         await client.query(queryInsertCrencas, paramsCrenca)
 
         const queryFormaCombate = `
         SELECT forma_de_combate.id 
             FROM forma_de_combate 
             WHERE forma_de_combate.nome = $1 OR forma_de_combate.nome = $2`
-
-
-
 
         const paramsSelectFormaCombate = [forma1, forma2]
         const res_FormaCombate = await client.query(queryFormaCombate, paramsSelectFormaCombate)
@@ -115,7 +111,6 @@ server.post('/inserir-magias', async (req, res) => {
 
 
         await client.query('COMMIT')
-        console.log('Comittou')
     } catch (e) {
         if (e.code === '23505') { // unique constraint
             e.message = `Erro: Nome ${nome_magia} já cadastrado`;
@@ -132,13 +127,7 @@ server.post('/inserir-magias', async (req, res) => {
 
 
 server.get('/magias/:nome', async (request, response) => {
-    console.log(request.path)
-    value = decodeURIComponent(request.path)
-    console.log(value)
-    // já vem decodificado: "NÉVOA SOMBRIA"
-    const name = request.params.nome;
-    console.log(name)
-    upperName = name
+    const upperName = request.params.nome;
     try {
         const magia_result = await pool.query(
             'SELECT * FROM magia WHERE nome = $1',

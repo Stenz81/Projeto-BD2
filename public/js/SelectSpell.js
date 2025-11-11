@@ -8,12 +8,13 @@
 //AND (crenca_x_magia.id_crenca = (SELECT id FROM crenca WHERE nome = 'Natureza') OR crenca_x_magia.id_crenca = (SELECT id FROM crenca WHERE nome = 'Anima'))
 //AND (forma_de_combate_x_magia.id_forma_de_combate = (SELECT id FROM forma_de_combate WHERE nome = 'Tank') OR (forma_de_combate_x_magia.id_forma_de_combate = (SELECT id FROM forma_de_combate WHERE nome = 'Suporte')))
 function selectMagia() {
+    const nome_magia = document.getElementById("nome_busca").value.trim()
     const nivel_inferior = document.getElementById("nivel_inferior").value.toString()
     const nivel_superior = document.getElementById("nivel_superior").value.toString()
     const crencas = window.selectedValues
     const formas_de_combate = window.selectedValues1
     const saida = document.getElementById("container2")
-
+    
     saida.innerHTML = ""; //limpar saida
 
     saida.style.display = "block";
@@ -30,6 +31,7 @@ function selectMagia() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+            nome_magia,
             nivel_inferior,
             nivel_superior,
             crencas,
@@ -45,7 +47,6 @@ function selectMagia() {
             magias.forEach(m => {
                 
                 const link = document.createElement('a');
-                console.log(m.nome)
                 link.href = '/magias/' + m.nome.toString(); // Rota que você criar para mostrar detalhes
                 link.textContent = m.nome;
                 link.style.display = "block"; // Um embaixo do outro
